@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 import InputText from '../components/InputText';
+import { createCard } from '../actions';
+import { addCard } from '../utils/api';
 
 class NewCard extends React.Component {
   state = {
@@ -10,16 +13,19 @@ class NewCard extends React.Component {
   };
 
   createNewCard = () => {
-    //TODO: CHAMA O REDUCER
+    const { dispatch, navigation } = this.props;
+    const { deckId } = navigation.state.params;
+    const { question, answer } = this.state;
 
-    //TODO: CHAMA A FUNÇÃO PARA ADICIONAR NO BANCO
+    dispatch(createCard(deckId, question, answer));
+    addCard(deckId, question, answer);
 
     this.setState(() => ({
       question: '',
       answer: ''
     }));
 
-    //TODO: VAI PRA PÁGINA PRINCIPAL
+    this.props.navigation.navigate('DeckView', { deckId });
 
     //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
   }
@@ -27,6 +33,11 @@ class NewCard extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+
+      <Text>
+        {this.props.navigation.state.params.deckId}
+      </Text>
+
         <InputText
           onChangeText={question => this.setState({ question })}
           value={this.state.question}
@@ -66,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewCard;
+export default connect()(NewCard);

@@ -19,7 +19,10 @@ class DeckList extends React.Component {
 
   renderItem = ({ item }) => (
     <Deck
-      deck={item}
+      title={item.title}
+      cards={item.cards}
+      deckId={item.id}
+      navigation={this.props.navigation}
       key={item.id}
     />
   )

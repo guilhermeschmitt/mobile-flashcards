@@ -16,7 +16,7 @@ export function addDeck(deck) {
   );
 }
 
-export function addCard(deckId, { question, answer }) {
+export function addCard(deckId, question, answer) {
   return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
     .then(response => {
       const data = JSON.parse(response);

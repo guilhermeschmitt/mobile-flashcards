@@ -1,22 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-class Deck extends React.Component {
-  render() {
-    const { title, cards } = this.props.deck;
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          {title}
-        </Text>
-        <Text style={styles.quantidade}>
-          {`${cards.length} cards`}
-        </Text>
-      </View>
-    )
-  }
-}
+const Deck = ({ title, cards, deckId, navigation }) => (
+  <TouchableOpacity
+    style={styles.container}
+    onPress={() => navigation.navigate("DeckView", { deckId })}
+  >
+    <Text style={styles.title}>
+      {title}
+    </Text>
+    <Text style={styles.quantidade}>
+      {`${cards.length} cards`}
+    </Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -38,7 +35,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
-
-
 
 export default Deck;

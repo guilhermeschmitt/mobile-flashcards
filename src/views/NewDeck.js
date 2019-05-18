@@ -32,7 +32,6 @@ class NewDeck extends React.Component {
 
     this.props.navigation.navigate('DeckView', {
       deckId: deck.id,
-      title: deck.title
     });
 
     this.setState(() => ({
