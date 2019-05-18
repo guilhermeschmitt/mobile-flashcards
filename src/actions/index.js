@@ -1,5 +1,5 @@
 export const RECEIVE_DECKS = 'RECEIVE_DECKS';
-export const ADD_DECK = 'ADD_DECK';
+export const CREATE_DECK = 'CREATE_DECK';
 export const ADD_CARD = 'ADD_CARD';
 
 export function receiveDecks(decks) {
@@ -9,11 +9,10 @@ export function receiveDecks(decks) {
   }
 }
 
-export function addDeck(id, name) {
+export function createDeck(deck) {
   return {
-    type: ADD_DECK,
-    id,
-    name
+    type: CREATE_DECK,
+    deck
   }
 }
 

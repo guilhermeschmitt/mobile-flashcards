@@ -1,7 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 import InputText from '../components/InputText';
+import { createDeck } from '../actions';
+import { addDeck } from '../utils/api';
+import { generateUID } from '../utils/utils';
 
 class NewDeck extends React.Component {
   state = {
@@ -13,16 +17,27 @@ class NewDeck extends React.Component {
       title,
     }));
 
-  createNewDeck = () => {
-    //TODO: CHAMA O REDUCER
+  _createDeck = () => ({
+    id: generateUID(),
+    title: this.state.title,
+    cards: [],
+  })
 
-    //TODO: CHAMA A FUNÇÃO PARA ADICIONAR NO BANCO
+  createNewDeck = () => {
+    const { dispatch } = this.props;
+    const deck = this._createDeck();
+
+    dispatch(createDeck(deck))
+    addDeck(deck);
+
+    this.props.navigation.navigate('DeckView', {
+      deckId: deck.id,
+      title: deck.title
+    });
 
     this.setState(() => ({
       title: '',
     }));
-
-    this.props.navigation.navigate('DeckView');
 
     //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
   };
@@ -65,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewDeck;
+export default connect()(NewDeck);

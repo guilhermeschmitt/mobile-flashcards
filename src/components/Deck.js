@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 class Deck extends React.Component {
   render() {
-    const { title, quantidade } = this.props.deck;
+    const { title, cards } = this.props.deck;
 
     return (
       <View style={styles.container}>
@@ -11,7 +11,7 @@ class Deck extends React.Component {
           {title}
         </Text>
         <Text style={styles.quantidade}>
-          {`${quantidade} cards`}
+          {`${cards.length} cards`}
         </Text>
       </View>
     )
