@@ -1,16 +1,29 @@
 import React from 'react';
-import { View } from 'react-native';
-import TabNav from './src/components/TabNav';
-import DeckList from './src/views/DeckList';
-import DeckView from './src/views/DeckView';
-import QuizView from './src/views/QuizView';
-import NewDeck from './src/views/NewDeck';
-import NewCard from './src/views/NewCard';
+import { View, StatusBar } from 'react-native';
+import { Constants } from 'expo';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import MainNavigator from './src/components/MainNavigator';
+import reducer from './src/reducers'
+
+
+function UdaciStatusBar({ backgroundColor, ...props }) {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  );
+}
 
 export default class App extends React.Component {
   render() {
     return (
-      <QuizView />
+      <Provider store={createStore(reducer)}>
+        <View style={{ flex: 1 }}>
+          <UdaciStatusBar backgroundColor="#800080" barStyle="light-content" />
+          <MainNavigator />
+        </View>
+      </Provider>
     );
   }
 }

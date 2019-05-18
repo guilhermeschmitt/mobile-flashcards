@@ -17,11 +17,11 @@ class DeckView extends React.Component {
         </View>
 
         <View>
-          <TextButton style={styles.addCard}>
+          <TextButton style={styles.addCard} onPress={() => this.props.navigation.navigate('NewCard')}>
             Add Card
           </TextButton>
 
-          <TextButton style={styles.startQuiz}>
+          <TextButton style={styles.startQuiz} onPress={() => this.props.navigation.navigate('QuizView')}>
             Start Quiz
           </TextButton>
         </View>
