@@ -1,27 +1,34 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 
 class DeckView extends React.Component {
 
   render() {
+
+    const { title, cards, id } = this.props.deck;
+
     return (
       <View style={styles.container}>
         <View style={styles.containerInfo}>
           <Text style={styles.title}>
-            TITULO
+            {title}
           </Text>
           <Text style={styles.quantidade}>
-            X cards
+            {`${cards.length} cards`}
           </Text>
         </View>
 
         <View>
-          <TextButton style={styles.addCard}>
+          <TextButton
+            style={styles.addCard}
+            onPress={() => this.props.navigation.navigate('NewCard', { deckId: id })}
+          >
             Add Card
           </TextButton>
 
-          <TextButton style={styles.startQuiz}>
+          <TextButton style={styles.startQuiz} onPress={() => this.props.navigation.navigate('QuizView')}>
             Start Quiz
           </TextButton>
         </View>
@@ -62,4 +69,11 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DeckView;
+function mapStateToProps(state, { navigation }) {
+  const { deckId } = navigation.state.params
+  return {
+    deck: state[deckId],
+  }
+}
+
+export default connect(mapStateToProps)(DeckView);

@@ -1,27 +1,61 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 import InputText from '../components/InputText';
+import { createDeck } from '../actions';
+import { addDeck } from '../utils/api';
+import { generateUID } from '../utils/utils';
 
 class NewDeck extends React.Component {
+  state = {
+    title: '',
+  };
+
+  onChangeText = title =>
+    this.setState(() => ({
+      title,
+    }));
+
+  _createDeck = () => ({
+    id: generateUID(),
+    title: this.state.title,
+    cards: [],
+  })
+
+  createNewDeck = () => {
+    const { dispatch } = this.props;
+    const deck = this._createDeck();
+
+    dispatch(createDeck(deck))
+    addDeck(deck);
+
+    this.props.navigation.navigate('DeckView', {
+      deckId: deck.id,
+    });
+
+    this.setState(() => ({
+      title: '',
+    }));
+
+    //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
+  };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>
-          What is the title of your new deck?
-        </Text>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <Text style={styles.header}>What is the title of your new deck?</Text>
 
         <InputText
-          onChangeText={() => {}}
-          value={undefined}
-          placeholder='Deck title'
+          onChangeText={title => this.setState({ title })}
+          value={this.state.title}
+          placeholder="Deck title"
         />
 
-        <TextButton style={styles.submitButton}>
+        <TextButton style={styles.submitButton} onPress={this.createNewDeck}>
           Submit
         </TextButton>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -37,12 +71,12 @@ const styles = StyleSheet.create({
     fontSize: 45,
     color: '#696969',
     padding: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   submitButton: {
     color: '#fff',
-    backgroundColor: '#000'
-  }
+    backgroundColor: '#000',
+  },
 });
 
-export default NewDeck;
+export default connect()(NewDeck);

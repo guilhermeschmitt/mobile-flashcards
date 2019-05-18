@@ -1,28 +1,59 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 import InputText from '../components/InputText';
+import { createCard } from '../actions';
+import { addCard } from '../utils/api';
 
 class NewCard extends React.Component {
+  state = {
+    question: '',
+    answer: '',
+  };
+
+  createNewCard = () => {
+    const { dispatch, navigation } = this.props;
+    const { deckId } = navigation.state.params;
+    const { question, answer } = this.state;
+
+    dispatch(createCard(deckId, question, answer));
+    addCard(deckId, question, answer);
+
+    this.setState(() => ({
+      question: '',
+      answer: ''
+    }));
+
+    this.props.navigation.navigate('DeckView', { deckId });
+
+    //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
+  }
+
   render() {
     return (
-      <View style={styles.container} >
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+
+      <Text>
+        {this.props.navigation.state.params.deckId}
+      </Text>
+
         <InputText
-          onChangeText={() => { }}
-          value={undefined}
-          placeholder='Question'
+          onChangeText={question => this.setState({ question })}
+          value={this.state.question}
+          placeholder="Question"
         />
 
         <InputText
-          onChangeText={() => { }}
-          value={undefined}
-          placeholder='Answer'
+          onChangeText={answer => this.setState({ answer })}
+          value={this.state.answer}
+          placeholder="Answer"
         />
 
-        <TextButton style={styles.submitButton}>
+        <TextButton style={styles.submitButton} onPress={this.createNewCard}>
           Submit
         </TextButton>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -38,12 +69,12 @@ const styles = StyleSheet.create({
     fontSize: 45,
     color: '#696969',
     padding: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   submitButton: {
     color: '#fff',
-    backgroundColor: '#000'
-  }
+    backgroundColor: '#000',
+  },
 });
 
-export default NewCard;
+export default connect()(NewCard);
