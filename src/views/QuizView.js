@@ -2,33 +2,90 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
+import { clearLocalNotification, setLocalNotification } from '../utils/notification';
 
 class QuizView extends React.Component {
 
   state = {
     showingAnswer: false,
     questionCounter: 0,
-    correctQuestions: 0
+    correctQuestions: 0,
+    showScore: false,
   }
 
-  onCorrect = () =>
-    this.setState(({ questionCounter, correctQuestions }) => ({
-      questionCounter: questionCounter + 1,
+  onCorrect = () => {
+    this.setState(({ correctQuestions }) => ({
       correctQuestions: correctQuestions + 1
     }));
 
+    this.checkIfIsTheLastQuestion();
+  }
+
+  checkIfIsTheLastQuestion = () => {
+    let { questionCounter, showScore } = this.state;
+    const { cards } = this.props.deck;
+
+    questionCounter++;
+
+    if (cards.length === questionCounter) {
+      showScore = true;
+      clearLocalNotification();
+      setLocalNotification();
+    }
+
+    this.setState({ questionCounter, showScore });
+  }
+
+  restartQuiz = () => {
+    const { navigation, deck } = this.props;
+
+    this.setState({
+      showingAnswer: false,
+      questionCounter: 0,
+      correctQuestions: 0,
+      showScore: false,
+    });
+
+    navigation.navigate("QuizView", { deckId: deck.id })
+  }
+
   render() {
 
-    const { cards } = this.props.deck;
-    const { showingAnswer, questionCounter, correctQuestions } = this.state;
+    const { navigation, deck } = this.props;
+    const { cards } = deck;
+    const { showingAnswer, questionCounter, correctQuestions, showScore } = this.state;
 
-
-    if (questionCounter === cards.length)
+    if (showScore)
       return (
         <View>
-          <Text>
-            VOCÊ TERMINOU O QUIZ
-          </Text>
+          <View>
+            <Text>
+              VOCÊ TERMINOU O QUIZ!
+            </Text>
+            <Text>
+              {correctQuestions}
+            </Text>
+            <Text>
+              Questões corretas!
+            </Text>
+          </View>
+
+          <View>
+
+            <TextButton
+              style={styles.correctButton}
+              onPress={this.restartQuiz}
+            >
+              Restart Quiz
+          </TextButton>
+            <TextButton
+              style={styles.incorrectButton}
+              onPress={() => navigation.goBack()}
+            >
+              Back to Deck
+          </TextButton>
+
+          </View>
         </View>
       );
 
@@ -67,7 +124,7 @@ class QuizView extends React.Component {
           </TextButton>
           <TextButton
             style={styles.incorrectButton}
-            onPress={() => this.setState({ questionCounter: questionCounter + 1 })}
+            onPress={this.checkIfIsTheLastQuestion}
             disabled={showingAnswer}
           >
             Incorrect
@@ -121,6 +178,7 @@ mapStateToProps = (state, { navigation }) => {
   const { deckId } = navigation.state.params
   return {
     deck: state[deckId],
+    navigation,
   }
 }
 
