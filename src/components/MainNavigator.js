@@ -3,6 +3,7 @@ import TabNav from './TabNav';
 import DeckDetails from '../views/DeckDetails';
 import CreateCard from '../views/CreateCard';
 import GameQuiz from '../views/GameQuiz';
+import { blue, white } from '../utils/colors';
 
 const MainNavigator = createAppContainer(createStackNavigator({
   home: {
@@ -15,9 +16,9 @@ const MainNavigator = createAppContainer(createStackNavigator({
     screen: DeckDetails,
     navigationOptions: {
       title: 'Deck details',
-      headerTintColor: "#fff",
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
     },
   },
@@ -25,9 +26,9 @@ const MainNavigator = createAppContainer(createStackNavigator({
     screen: CreateCard,
     navigationOptions: {
       title: 'Add card',
-      headerTintColor: "#fff",
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
     },
   },
@@ -35,9 +36,9 @@ const MainNavigator = createAppContainer(createStackNavigator({
     screen: GameQuiz,
     navigationOptions: {
       title: 'Game quiz',
-      headerTintColor: "#fff",
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
     },
   },

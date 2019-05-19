@@ -16,7 +16,7 @@ class CreateDeck extends React.Component {
   createNewDeck = () => {
     const { dispatch, navigation } = this.props;
     const deck = {
-      id: generateUID,
+      id: generateUID(),
       title: this.state.title,
       cards: []
     };

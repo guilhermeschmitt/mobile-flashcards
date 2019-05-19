@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import Deck from '../components/Deck';
 import { getDecks } from '../utils/api';
@@ -42,14 +42,14 @@ class DeckList extends React.Component {
         </View>
       )
 
-    //TODO: STYLE BUTTON
     if (decks.length <= 0)
       return (
         <View style={deckListStyle.emptyList}>
           <TextButton
             onPress={() => navigation.navigate('CreateDeck')}
+            style={deckListStyle.addDeckButton}
           >
-            Add Deck
+            NEW DECK
           </TextButton>
         </View>
       );
