@@ -28,7 +28,13 @@ class DeckView extends React.Component {
             Add Card
           </TextButton>
 
-          <TextButton style={styles.startQuiz} onPress={() => this.props.navigation.navigate('QuizView')}>
+          {/* FIXME: Podia colocar um estilo diferente pro botão desabilitado, né? */}
+
+          <TextButton
+            style={styles.startQuiz}
+            onPress={() => this.props.navigation.navigate('QuizView', { deckId: id })}
+            disabled={!cards.length}
+          >
             Start Quiz
           </TextButton>
         </View>

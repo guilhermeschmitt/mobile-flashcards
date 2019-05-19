@@ -1,31 +1,75 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 
 class QuizView extends React.Component {
+
+  state = {
+    showingAnswer: false,
+    questionCounter: 0,
+    correctQuestions: 0
+  }
+
+  onCorrect = () =>
+    this.setState(({ questionCounter, correctQuestions }) => ({
+      questionCounter: questionCounter + 1,
+      correctQuestions: correctQuestions + 1
+    }));
+
   render() {
+
+    const { cards } = this.props.deck;
+    const { showingAnswer, questionCounter, correctQuestions } = this.state;
+
+
+    if (questionCounter === cards.length)
+      return (
+        <View>
+          <Text>
+            VOCÊ TERMINOU O QUIZ
+          </Text>
+        </View>
+      );
+
     return (
       <View style={styles.container}>
         <Text style={styles.count}>
-          1/2
+          {questionCounter + 1}/{cards.length}
         </Text>
 
         <View style={styles.info}>
           <Text style={styles.question}>
-            QUESTION
+            {showingAnswer
+              ? cards[questionCounter].answer
+              : cards[questionCounter].question
+            }
           </Text>
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity
+            onPress={() => this.setState({ showingAnswer: !showingAnswer })}
+          >
             <Text style={styles.option}>
-              Answer
+              {showingAnswer
+                ? 'Show question'
+                : 'Show answer'
+              }
             </Text>
           </TouchableOpacity>
         </View>
 
         <View>
-          <TextButton style={styles.correctButton}>
+          <TextButton
+            style={styles.correctButton}
+            onPress={this.onCorrect}
+            disabled={showingAnswer}
+          >
             Correct
           </TextButton>
-          <TextButton style={styles.incorrectButton}>
+          <TextButton
+            style={styles.incorrectButton}
+            onPress={() => this.setState({ questionCounter: questionCounter + 1 })}
+            disabled={showingAnswer}
+          >
             Incorrect
           </TextButton>
         </View>
@@ -71,6 +115,13 @@ const styles = StyleSheet.create({
     color: 'white',
     borderColor: 'red',
   }
-})
+});
 
-export default QuizView;
+mapStateToProps = (state, { navigation }) => {
+  const { deckId } = navigation.state.params
+  return {
+    deck: state[deckId],
+  }
+}
+
+export default connect(mapStateToProps)(QuizView);
