@@ -1,31 +1,132 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
+import { clearLocalNotification, setLocalNotification } from '../utils/notification';
 
 class QuizView extends React.Component {
+
+  state = {
+    showingAnswer: false,
+    questionCounter: 0,
+    correctQuestions: 0,
+    showScore: false,
+  }
+
+  onCorrect = () => {
+    this.setState(({ correctQuestions }) => ({
+      correctQuestions: correctQuestions + 1
+    }));
+
+    this.checkIfIsTheLastQuestion();
+  }
+
+  checkIfIsTheLastQuestion = () => {
+    let { questionCounter, showScore } = this.state;
+    const { cards } = this.props.deck;
+
+    questionCounter++;
+
+    if (cards.length === questionCounter) {
+      showScore = true;
+      clearLocalNotification();
+      setLocalNotification();
+    }
+
+    this.setState({ questionCounter, showScore });
+  }
+
+  restartQuiz = () => {
+    const { navigation, deck } = this.props;
+
+    this.setState({
+      showingAnswer: false,
+      questionCounter: 0,
+      correctQuestions: 0,
+      showScore: false,
+    });
+
+    navigation.navigate("QuizView", { deckId: deck.id })
+  }
+
   render() {
+
+    const { navigation, deck } = this.props;
+    const { cards } = deck;
+    const { showingAnswer, questionCounter, correctQuestions, showScore } = this.state;
+
+    if (showScore)
+      return (
+        <View>
+          <View>
+            <Text>
+              VOCÊ TERMINOU O QUIZ!
+            </Text>
+            <Text>
+              {correctQuestions}
+            </Text>
+            <Text>
+              Questões corretas!
+            </Text>
+          </View>
+
+          <View>
+
+            <TextButton
+              style={styles.correctButton}
+              onPress={this.restartQuiz}
+            >
+              Restart Quiz
+          </TextButton>
+            <TextButton
+              style={styles.incorrectButton}
+              onPress={() => navigation.goBack()}
+            >
+              Back to Deck
+          </TextButton>
+
+          </View>
+        </View>
+      );
+
     return (
       <View style={styles.container}>
         <Text style={styles.count}>
-          1/2
+          {questionCounter + 1}/{cards.length}
         </Text>
 
         <View style={styles.info}>
           <Text style={styles.question}>
-            QUESTION
+            {showingAnswer
+              ? cards[questionCounter].answer
+              : cards[questionCounter].question
+            }
           </Text>
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity
+            onPress={() => this.setState({ showingAnswer: !showingAnswer })}
+          >
             <Text style={styles.option}>
-              Answer
+              {showingAnswer
+                ? 'Show question'
+                : 'Show answer'
+              }
             </Text>
           </TouchableOpacity>
         </View>
 
         <View>
-          <TextButton style={styles.correctButton}>
+          <TextButton
+            style={styles.correctButton}
+            onPress={this.onCorrect}
+            disabled={showingAnswer}
+          >
             Correct
           </TextButton>
-          <TextButton style={styles.incorrectButton}>
+          <TextButton
+            style={styles.incorrectButton}
+            onPress={this.checkIfIsTheLastQuestion}
+            disabled={showingAnswer}
+          >
             Incorrect
           </TextButton>
         </View>
@@ -71,6 +172,14 @@ const styles = StyleSheet.create({
     color: 'white',
     borderColor: 'red',
   }
-})
+});
 
-export default QuizView;
+mapStateToProps = (state, { navigation }) => {
+  const { deckId } = navigation.state.params
+  return {
+    deck: state[deckId],
+    navigation,
+  }
+}
+
+export default connect(mapStateToProps)(QuizView);

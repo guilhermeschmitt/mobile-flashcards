@@ -1,9 +1,12 @@
 import React from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-export default function TextButton({ children, onPress, style = {} }) {
+export default function TextButton({ children, onPress, disabled = false, style = {} }) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={[styles.reset, style]}>
         {children}
       </Text>
