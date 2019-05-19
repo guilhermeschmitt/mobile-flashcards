@@ -3,10 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 
-class DeckView extends React.Component {
+class DeckDetails extends React.Component {
 
   render() {
-
     const { title, cards, id } = this.props.deck;
 
     return (
@@ -23,7 +22,7 @@ class DeckView extends React.Component {
         <View>
           <TextButton
             style={styles.addCard}
-            onPress={() => this.props.navigation.navigate('NewCard', { deckId: id })}
+            onPress={() => this.props.navigation.navigate('CreateCard', { deckId: id })}
           >
             Add Card
           </TextButton>
@@ -32,7 +31,7 @@ class DeckView extends React.Component {
 
           <TextButton
             style={styles.startQuiz}
-            onPress={() => this.props.navigation.navigate('QuizView', { deckId: id })}
+            onPress={() => this.props.navigation.navigate('GameQuiz', { deckId: id })}
             disabled={!cards.length}
           >
             Start Quiz
@@ -82,4 +81,4 @@ function mapStateToProps(state, { navigation }) {
   }
 }
 
-export default connect(mapStateToProps)(DeckView);
+export default connect(mapStateToProps)(DeckDetails);

@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 const Deck = ({ title, cards, deckId, navigation }) => (
   <TouchableOpacity
     style={styles.container}
-    onPress={() => navigation.navigate("DeckView", { deckId })}
+    onPress={() => navigation.navigate("DeckDetails", { deckId })}
   >
     <Text style={styles.title}>
       {title}

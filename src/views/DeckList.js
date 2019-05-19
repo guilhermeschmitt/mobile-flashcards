@@ -3,18 +3,21 @@ import { StyleSheet, View, Text, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import Deck from '../components/Deck';
 import { getDecks } from '../utils/api';
+import { deckListStyle } from '../utils/styles';
 import { receiveDecks } from '../actions';
+import TextButton from '../components/TextButton';
 
 class DeckList extends React.Component {
 
+  state = {
+    loading: true,
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
-
     getDecks()
       .then(response => dispatch(receiveDecks(response)))
-
-    //TODO: NOTIFICAO?
-
+      .then(() => this.setState({ loading: false }));
   }
 
   renderItem = ({ item }) => (
@@ -28,42 +31,44 @@ class DeckList extends React.Component {
   )
 
   render() {
+    const { decks, navigation } = this.props;
 
-    const { decks } = this.props;
-
-    //TODO: FAZER UM LOAD SE PA
-
-    return decks.length <= 0
-      ? (
-        <View>
-          <Text>
-            //TODO: FAZER UM BOTÃO PRA CADASTRAR AQUI
-            Nenhum deck cadastrado
+    if (this.state.loading)
+      return (
+        <View style={deckListStyle.loadingContainer}>
+          <Text style={deckListStyle.loadingText}>
+            Loading...
           </Text>
         </View>
-      ) : (
-        < View style={styles.container} >
-          <FlatList
-            data={decks}
-            renderItem={this.renderItem}
-          />
-        </View >
+      )
+
+    //TODO: STYLE BUTTON
+    if (decks.length <= 0)
+      return (
+        <View style={deckListStyle.emptyList}>
+          <TextButton
+            onPress={() => navigation.navigate('CreateDeck')}
+          >
+            Add Deck
+          </TextButton>
+        </View>
       );
+
+    return (
+      < View style={deckListStyle.deckList} >
+        <FlatList
+          data={decks}
+          renderItem={this.renderItem}
+        />
+      </View >
+    );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-});
-
-function mapStateToProps(decks) {
+function mapStateToProps(decks, { navigation }) {
   return {
-    decks: Object.values(decks)
+    decks: Object.values(decks),
+    navigation
   }
 }
 

@@ -7,7 +7,7 @@ import {
 } from 'react-navigation';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import DeckList from '../views/DeckList';
-import NewDeck from '../views/NewDeck';
+import CreateDeck from '../views/CreateDeck';
 
 const RouteConfigs = {
   DeckList: {
@@ -19,8 +19,8 @@ const RouteConfigs = {
       ),
     },
   },
-  NewDeck: {
-    screen: NewDeck,
+  CreateDeck: {
+    screen: CreateDeck,
     navigationOptions: {
       tabBarLabel: 'NEW DECK',
       tabBarIcon: ({ tintColor }) => (

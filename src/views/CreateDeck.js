@@ -7,44 +7,38 @@ import { createDeck } from '../actions';
 import { addDeck } from '../utils/api';
 import { generateUID } from '../utils/utils';
 
-class NewDeck extends React.Component {
+class CreateDeck extends React.Component {
+
   state = {
     title: '',
   };
 
-  onChangeText = title =>
-    this.setState(() => ({
-      title,
-    }));
-
-  _createDeck = () => ({
-    id: generateUID(),
-    title: this.state.title,
-    cards: [],
-  })
-
   createNewDeck = () => {
-    const { dispatch } = this.props;
-    const deck = this._createDeck();
+    const { dispatch, navigation } = this.props;
+    const deck = {
+      id: generateUID,
+      title: this.state.title,
+      cards: []
+    };
 
     dispatch(createDeck(deck))
     addDeck(deck);
 
-    this.props.navigation.navigate('DeckView', {
-      deckId: deck.id,
-    });
+    navigation.navigate('DeckDetails', { deckId: deck.id });
 
-    this.setState(() => ({
-      title: '',
-    }));
-
-    //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
+    this.setState({ title: '' })
   };
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <Text style={styles.header}>What is the title of your new deck?</Text>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        enabled
+      >
+        <Text style={styles.header}>
+          What is the title of your new deck?
+        </Text>
 
         <InputText
           onChangeText={title => this.setState({ title })}
@@ -52,7 +46,10 @@ class NewDeck extends React.Component {
           placeholder="Deck title"
         />
 
-        <TextButton style={styles.submitButton} onPress={this.createNewDeck}>
+        <TextButton
+          style={styles.submitButton}
+          onPress={this.createNewDeck}
+        >
           Submit
         </TextButton>
       </KeyboardAvoidingView>
@@ -79,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(NewDeck);
+export default connect()(CreateDeck);

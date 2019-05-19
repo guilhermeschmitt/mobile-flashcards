@@ -6,7 +6,8 @@ import InputText from '../components/InputText';
 import { createCard } from '../actions';
 import { addCard } from '../utils/api';
 
-class NewCard extends React.Component {
+class CreateCard extends React.Component {
+
   state = {
     question: '',
     answer: '',
@@ -25,18 +26,21 @@ class NewCard extends React.Component {
       answer: ''
     }));
 
-    this.props.navigation.navigate('DeckView', { deckId });
+    navigation.navigate('DeckDetails', { deckId });
 
-    //TODO: VERIFICAR SE TEM NOTIFICAÇÃO DE TELA
   }
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        enabled
+      >
 
-      <Text>
-        {this.props.navigation.state.params.deckId}
-      </Text>
+        <Text>
+          TODO: Tem um texto aqui
+        </Text>
 
         <InputText
           onChangeText={question => this.setState({ question })}
@@ -50,7 +54,10 @@ class NewCard extends React.Component {
           placeholder="Answer"
         />
 
-        <TextButton style={styles.submitButton} onPress={this.createNewCard}>
+        <TextButton
+          style={styles.submitButton}
+          onPress={this.createNewCard}
+        >
           Submit
         </TextButton>
       </KeyboardAvoidingView>
@@ -77,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(NewCard);
+export default connect()(CreateCard);

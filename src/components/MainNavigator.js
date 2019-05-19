@@ -1,9 +1,8 @@
-import React from 'react';
-import { StackNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 import TabNav from './TabNav';
-import DeckView from '../views/DeckView';
-import NewCard from '../views/NewCard';
-import QuizView from '../views/QuizView';
+import DeckDetails from '../views/DeckDetails';
+import CreateCard from '../views/CreateCard';
+import GameQuiz from '../views/GameQuiz';
 
 const MainNavigator = createAppContainer(createStackNavigator({
   home: {
@@ -12,32 +11,35 @@ const MainNavigator = createAppContainer(createStackNavigator({
       header: null,
     },
   },
-  DeckView: {
-    screen: DeckView,
-    navigationOptions: ({ navigation }) => ({
+  DeckDetails: {
+    screen: DeckDetails,
+    navigationOptions: {
+      title: 'Deck details',
       headerTintColor: "#fff",
       headerStyle: {
         backgroundColor: "#800080",
       },
-    }),
+    },
   },
-  NewCard: {
-    screen: NewCard,
-    navigationOptions: ({ navigation }) => ({
+  CreateCard: {
+    screen: CreateCard,
+    navigationOptions: {
+      title: 'Add card',
       headerTintColor: "#fff",
       headerStyle: {
         backgroundColor: "#800080",
       },
-    }),
+    },
   },
-  QuizView: {
-    screen: QuizView,
-    navigationOptions: ({ navigation }) => ({
+  GameQuiz: {
+    screen: GameQuiz,
+    navigationOptions: {
+      title: 'Game quiz',
       headerTintColor: "#fff",
       headerStyle: {
         backgroundColor: "#800080",
       },
-    }),
+    },
   },
 }));
 
