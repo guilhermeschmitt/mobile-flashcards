@@ -1,15 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import TextButton from './TextButton';
+import { gamePanelStyle } from '../utils/styles';
 
 const GamePanel = ({ questionCounter, cards, showingAnswer, switchPanel, clickCorrect, clickIncorrect }) => (
-  <View style={styles.container}>
-    <Text style={styles.count}>
-      {questionCounter + 1}/{cards.length}
-    </Text>
+  <View style={gamePanelStyle.container}>
 
-    <View style={styles.info}>
-      <Text style={styles.question}>
+    <View style={gamePanelStyle.info}>
+      <Text style={gamePanelStyle.question}>
         {showingAnswer
           ? cards[questionCounter].answer
           : cards[questionCounter].question
@@ -18,7 +16,7 @@ const GamePanel = ({ questionCounter, cards, showingAnswer, switchPanel, clickCo
       <TouchableOpacity
         onPress={switchPanel}
       >
-        <Text style={styles.option}>
+        <Text style={gamePanelStyle.option}>
           {showingAnswer
             ? 'Show question'
             : 'Show answer'
@@ -27,16 +25,20 @@ const GamePanel = ({ questionCounter, cards, showingAnswer, switchPanel, clickCo
       </TouchableOpacity>
     </View>
 
-    <View>
+    <Text style={gamePanelStyle.count}>
+      {cards.length - (questionCounter + 1)} remaining
+    </Text>
+
+    <View style={gamePanelStyle.buttons}>
       <TextButton
-        style={styles.correctButton}
+        style={gamePanelStyle.correctButton}
         onPress={clickCorrect}
         disabled={showingAnswer}
       >
         Correct
     </TextButton>
       <TextButton
-        style={styles.incorrectButton}
+        style={gamePanelStyle.incorrectButton}
         onPress={clickIncorrect}
         disabled={showingAnswer}
       >
@@ -45,44 +47,6 @@ const GamePanel = ({ questionCounter, cards, showingAnswer, switchPanel, clickCo
     </View>
 
   </View>
-)
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  count: {
-    alignSelf: 'flex-start',
-    fontWeight: 'bold',
-  },
-  info: {
-    alignItems: 'center',
-  },
-  question: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingBottom: 5
-  },
-  option: {
-    color: 'red',
-    fontWeight: 'bold'
-  },
-  correctButton: {
-    backgroundColor: 'green',
-    color: 'white',
-    borderColor: 'green',
-  },
-  incorrectButton: {
-    backgroundColor: 'red',
-    color: 'white',
-    borderColor: 'red',
-  }
-});
+);
 
 export default GamePanel;

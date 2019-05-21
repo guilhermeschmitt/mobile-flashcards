@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { Text, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import TextButton from '../components/TextButton';
 import InputText from '../components/InputText';
 import { createDeck } from '../actions';
 import { addDeck } from '../utils/api';
+import { createDeckStyle } from '../utils/styles';
 import { generateUID } from '../utils/utils';
 
 class CreateDeck extends React.Component {
-
   state = {
     title: '',
   };
@@ -18,36 +18,36 @@ class CreateDeck extends React.Component {
     const deck = {
       id: generateUID(),
       title: this.state.title,
-      cards: []
+      cards: [],
     };
 
-    dispatch(createDeck(deck))
+    dispatch(createDeck(deck));
     addDeck(deck);
 
     navigation.navigate('DeckDetails', { deckId: deck.id });
 
-    this.setState({ title: '' })
+    this.setState({ title: '' });
   };
 
   render() {
     return (
       <KeyboardAvoidingView
-        style={styles.container}
-        behavior="padding"
+        style={createDeckStyle.container}
+        behavior="padding" 
         enabled
       >
-        <Text style={styles.header}>
-          What is the title of your new deck?
+        <Text style={createDeckStyle.header}>
+          What are you going to study?
         </Text>
 
         <InputText
           onChangeText={title => this.setState({ title })}
           value={this.state.title}
-          placeholder="Deck title"
+          placeholder="e.g React native"
         />
 
         <TextButton
-          style={styles.submitButton}
+          style={createDeckStyle.submitButton}
           onPress={this.createNewDeck}
         >
           Submit
@@ -56,24 +56,5 @@ class CreateDeck extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    fontSize: 45,
-    color: '#696969',
-    padding: 10,
-    textAlign: 'center',
-  },
-  submitButton: {
-    color: '#fff',
-    backgroundColor: '#000',
-  },
-});
 
 export default connect()(CreateDeck);
