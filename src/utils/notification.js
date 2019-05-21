@@ -2,7 +2,7 @@
 import { AsyncStorage } from "react-native";
 import { Notifications, Permissions } from "expo";
 
-const NOTIFICATION_KEY = "Flashcard:QuizNotification";
+const NOTIFICATION_KEY = "Udacity:MobileFlashCardsNotifications";
 
 function createNotification() {
   return {

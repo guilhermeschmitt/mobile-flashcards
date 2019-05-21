@@ -1,9 +1,9 @@
-import React from 'react';
-import { StackNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 import TabNav from './TabNav';
-import DeckView from '../views/DeckView';
-import NewCard from '../views/NewCard';
-import QuizView from '../views/QuizView';
+import DeckDetails from '../views/DeckDetails';
+import CreateCard from '../views/CreateCard';
+import GameQuiz from '../views/GameQuiz';
+import { blue, white } from '../utils/colors';
 
 const MainNavigator = createAppContainer(createStackNavigator({
   home: {
@@ -12,32 +12,35 @@ const MainNavigator = createAppContainer(createStackNavigator({
       header: null,
     },
   },
-  DeckView: {
-    screen: DeckView,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: "#fff",
+  DeckDetails: {
+    screen: DeckDetails,
+    navigationOptions: {
+      title: 'Deck details',
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
-    }),
+    },
   },
-  NewCard: {
-    screen: NewCard,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: "#fff",
+  CreateCard: {
+    screen: CreateCard,
+    navigationOptions: {
+      title: 'Add card',
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
-    }),
+    },
   },
-  QuizView: {
-    screen: QuizView,
-    navigationOptions: ({ navigation }) => ({
-      headerTintColor: "#fff",
+  GameQuiz: {
+    screen: GameQuiz,
+    navigationOptions: {
+      title: 'Game quiz',
+      headerTintColor: white,
       headerStyle: {
-        backgroundColor: "#800080",
+        backgroundColor: blue,
       },
-    }),
+    },
   },
 }));
 

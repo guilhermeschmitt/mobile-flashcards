@@ -7,7 +7,7 @@ export default function TextButton({ children, onPress, disabled = false, style 
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={[styles.reset, style]}>
+      <Text style={[styles.reset, style, disabled ? styles.disabled : '']}>
         {children}
       </Text>
     </TouchableOpacity>
@@ -26,5 +26,8 @@ const styles = StyleSheet.create({
     width: 150,
     textAlign: 'center',
     borderRadius: 5,
+  },
+  disabled: {
+    opacity: 0.5
   }
 }) 

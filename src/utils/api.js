@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-const FLASHCARD_STORAGE_KEY = 'Flashcard:deckTESTE';
+const FLASHCARD_STORAGE_KEY = 'Udacity:MobileFlashCards';
 
 export function getDecks() {
   return AsyncStorage.getItem(FLASHCARD_STORAGE_KEY)
