@@ -1,6 +1,6 @@
 ## Mobile Flashcards
 
-Final assessment project of the Udacity Native React course,  where the goal was to build an App with the knowledge acquired during the course.
+Final assessment project of the [Udacity](https://www.udacity.com/) Native React course,  where the goal was to build an App with the knowledge acquired during the course.
 
 ### Getting Started
 
@@ -20,11 +20,11 @@ random_id: {
 	id: random_id,
 	title: deck_name,
 	cards: [
-        {
-          question: string_question,
-          answer: string_answer
-        }
-      ]
+		{
+		  question: string_question,
+		  answer: string_answer
+		}
+      	]
     }
 ```
 
